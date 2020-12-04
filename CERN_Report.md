@@ -1,0 +1,90 @@
+<h1>CERN Z Boson Data Analysis</h1> 
+<img src= 'ZBoson.png' >
+First Detection of Z Boson particle
+<h1>1. Introduction:</h1> 
+The name boson comes from the surname of an Indian physicist Satyendra Nath Bose, an extraodinary physicist from the early twentieth century who worked alongside Albert Einstein to develop a method of analysis called Bose-Einstein Statistics. 
+
+A boson is a type of particle that obeys the rules of Bose-Einstein Statistics. Bose-Einstein statistics describe one of two possible ways in which a collection of non-interacting, non-distinguishable particles may occupy a set of available discrete energy states at thermodynamic equilibrium. In that, the bosons hold a intrinsic spin which contains an integer value, such as 0, 1, -1, -2, 2, etc. Bosons behave differentely than other particles such as Fermions. In low temperatures, an unlimited amount of bosons can collect into the same energy state, a intersting phenomenon called "condensation". 
+
+This is an important phenomenon, because we will be observing a particle that can overlap and coexist with other bosons. On the other hand, fermions cannot do this becuase they follow the Fermi-exclusion principle. The applications of boson comes in the forms of lasers, where photons can overlap and transform into a laser and or some matter can form the exotic state of Bose-Einstein condensate. 
+
+<b> The different fundamental Bosons are as follows: </b> 
+1. <b>Photon</b> - known as the 'particle of light', but can behave as either a wave or a particle. Holds the property of electromagnetic interactions
+2. <b>Gluon</b> - binds together quarks to form protons and neutrons and holds the protons and neutrons together within an atom's nucleous. Holds the property of strong nuclear force. 
+3. <b>W Boson</b> - Holds the property of weak nuclear force.
+4. <b>Z Boson</b> - Holds the property of weak nuclear force. 
+
+<b> How were we able to observe the Z boson? </b>
+
+While experimentation was being done during the Gargamelle bubble chamber experiment at CERN, the Z boson was detected. Neutrinos were in direct correlation to the discovery of the Z boson, in that, neutrinos only interact with weak forces. So, when neutrinos were accelerated through the bubble chamber, there was detection of a weak neutral current, and or evidence of the Z boson. 
+
+<h1>2. Data Acquisition & Cleaning </h1> 
+The data is acquired from CERN Open data source, data includes:
+
+* Z-Boson mass 
+
+<h3>2.1 Data Source</h3>
+CERN is a european organization for Nuclear Research, it operates the largest particle physics laboratory in the world. Established in 1954, the organization is based in a northwest suburb of Geneva on the Franco-Swiss border and has 23 member states. 
+
+CERN Open data contains 2 petabytes of data that contains datasets on particles, software, environments, and documentation. Defintely worth taking a look. <a  href= "http://opendata.cern.ch" >CERN_OpenData </a>
+
+<h3>2.2 Data Cleaning</h3> 
+Data was downloaded as a csv file, so pandas was necessary to read in the csv file into a pandas dataframe. The data contains 663 rows of different Z boson masses that we will use for finding the mass, which is measured in <b>GeV("Giga Electron Volts")</b>. 
+
+<h1>3. Exploratory Analysis</h1> 
+<h3> 3.1 Pandas DataFrame</h3>
+Passing the CERN Z boson mass data into a pandas dataframe for easy visualization. We will then find the descriptive statistics for the data. The dataframe is as follows: 
+<img src = 'ZmassFrame.png' >
+<h3> 3.2 Descriptive Statistics</h3> 
+<img src = 'DescFrame.png'>
+We notice that there exists a negative skew in the distribution of data, meaning that there is a slight gap between mean and the highest mass in the data. By adding a conditional statment to the data such as collecting the data greater than 90 GeV and the data less than 90 Gev we find a few values that describe the reasons for skewness. 
+
+When the data is greater than 90 GeV, then we return 181 values. 
+(where the max value is 176.642 GeV) 
+
+While the data is less than 90 GeV , then we return 482 values. 
+(where the min value is .137 GeV)
+
+<h3>3.2 Frequency Plot </h3> 
+When plotting a Frequency plot, we can calculate the width of the bins for optimization of the plot, such that the uncertainty will be below 10%. In this case, the uncertainty is 9% by the following calculation: 
+\begin{equation} 
+fractionalUncertainty = \frac{\delta x}{x_{best}}
+\end{equation}
+The $\delta x$ = 4.413. 
+
+<img src = 'FreqPlot.png' >
+
+<h3> 3.3 Gaussian Distribution Overlayed on Histogram </h3> 
+Now, it is obvious that the data set follows a normal distribution. In addition, by the central limit theorem, it states that the population with mean $\mu$ and standard deviation $\sigma$, then the distribution of the sample means will be approximately normally distributed. 
+
+The two important fit parameters that we need to consider is the mean and the standard deviation, such that these two parameters will determine the confidence level of our data and also the precision. 
+
+To Overlay with a gaussian curve we will use a non-linear fit least squares fit to an effective range. From this fit we will extract the mean and the standard deviation from its parameters. The yield of the plot is as follows: 
+<img src = "Normplot.png" >
+
+
+<h3> 3.4 Removing Background noise </h3> 
+The Lorentzian Peak on Quadratic Background has been used by the CERN to fit signal/background data. 
+\begin{equation}
+y(E) = a_1 + a_2 +a_3E^2 + A_o\frac{\Gamma_o/(2\pi)}{(E-E_o)^2 +(\Gamma_0/2)^2} 
+\end{equation} 
+<img src = "LoretnzFit.png" >
+From the lorentzian fit, we calculate $\mu$ = 89.03GeV and $\sigma$=7.09.
+
+We see that the parameters are only slighly altered by comparing only the values that have correlation, the mean is not altered much, but the standard deviation is altered.
+Notice, that the standard Deviation increases, we should expect a higher standard deviation, in that we are removing information from our data. Hence the standard deviation will increase, due to the difference between the values will increase. 
+The Chi-squared value improves, relativiely, due to the fact that in the region of interest the data is improving in predicting the observed value to the expected. Thus, chi-squared will reduce.
+
+<h1> 4. Discussion </h1> 
+The expected value of the Z Boson is 91.1876 $\pm$ .0021 GeV. 
+The error percentage between Z-mass expected and calcuated is 2.4$\%$. Though, our error margins are within the expected value, such that we are encompassing the correct answer. However, we can improve our measured value, by having more data to improve the peak. Or we can increase the number of bins in the histogram plot, such that the peak will sit in a bin of approximately a size of $\delta x$. 
+
+In addition, we can try other types of logistic regressions to be able to determine the mass of the particle more effectively. All though, the mass calculated in this report was precise enough to remain within the confidence interval. 
+
+<h1> 5. Conclusion </h1> 
+CERN open dataset is an awesome source for many other apsiring scientists to take advantage of. In that, it allows for many users to be able to publish their own results or compare with others. I will continue to keep an eye on their data sources for other projects. 
+
+
+```python
+
+```
